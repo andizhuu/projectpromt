@@ -40,7 +40,7 @@ ${appType}
 
 Features:
 ${features}
-                  `
+`
                 }
               ]
             }
@@ -64,26 +64,27 @@ ${features}
           2
         )
       )
-
     }
-
   }
 
   return (
+    <div
+      style={{
+        background: "#0f172a",
+        minHeight: "100vh",
+        padding: "20px",
+        color: "white",
+        fontFamily: "sans-serif"
+      }}
+    >
 
-    <div style={{
-      background: "#0f172a",
-      minHeight: "100vh",
-      padding: "20px",
-      color: "white",
-      fontFamily: "sans-serif"
-    }}>
-
-      <h1 style={{
-        fontSize: "32px",
-        fontWeight: "bold",
-        marginBottom: "20px"
-      }}>
+      <h1
+        style={{
+          fontSize: "32px",
+          fontWeight: "bold",
+          marginBottom: "20px"
+        }}
+      >
         ProjectPromt AI
       </h1>
 
@@ -162,7 +163,5 @@ ${features}
       </div>
 
     </div>
-
   )
-
 }

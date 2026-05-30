@@ -3,7 +3,7 @@ import axios from "axios"
 
 export default function App() {
 
-  const API_KEY = "AIzaSyA5994zyW1mUhQTtIUGXvFGkq-NxCHfnPU"
+  const API_KEY = prompt("Masukkan API Key Gemini")
 
   const [appType, setAppType] = useState("Aplikasi Kasir")
   const [features, setFeatures] = useState("")

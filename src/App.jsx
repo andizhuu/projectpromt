@@ -3,55 +3,89 @@ import axios from "axios"
 
 export default function App() {
 
-  const API_KEY = prompt("Masukkan API Key Gemini")
-
-  const [appType, setAppType] = useState("Aplikasi Kasir")
+  const [appType, setAppType] = useState("")
+  const [technology, setTechnology] = useState("")
+  const [detailLevel, setDetailLevel] = useState("Standar")
   const [features, setFeatures] = useState("")
   const [result, setResult] = useState("Hasil prompt akan muncul di sini...")
 
   async function generatePrompt() {
+
+    if (!appType) {
+      alert("Pilih jenis aplikasi terlebih dahulu")
+      return
+    }
 
     setResult("Generating AI response...")
 
     try {
 
       const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`,
+        "https://projectpromt-backend.onrender.com/generate",
         {
-          contents: [
+          model: "llama-3.3-70b-versatile",
+          messages: [
             {
-              parts: [
-                {
-                  text: `
-Create a complete professional app development prompt with:
+              role: "user",
+              content: `
+Anda adalah Senior Software Architect dan UI/UX Designer.
 
-- UI/UX modern
-- Responsive mobile design
-- Color palette
-- Features explanation
-- Database structure
-- Authentication system
-- Dashboard layout
-- Technology recommendation
-- Step by step development
+Buat spesifikasi aplikasi profesional.
 
-App Type:
+Jenis Aplikasi:
 ${appType}
 
-Features:
+Teknologi:
+${technology}
+
+Tingkat Detail:
+${detailLevel}
+
+Fitur:
 ${features}
+
+Buat output dengan format berikut:
+
+# Nama Project
+
+# Deskripsi Project
+
+# Target Pengguna
+
+# UI/UX Design
+- Warna utama
+- Warna sekunder
+- Typography
+- Layout
+
+# Struktur Database
+
+# Struktur Folder Project
+
+# Sistem Autentikasi
+
+# Dashboard Admin
+
+# Daftar Fitur Lengkap
+
+# API Endpoint
+
+# Roadmap Development
+
+# Deployment
+
+# Rekomendasi Pengembangan Selanjutnya
+
+Tuliskan sangat detail dan profesional.
 `
-                }
-              ]
             }
           ]
         }
       )
 
-      const aiText =
-        response.data.candidates[0].content.parts[0].text
-
-      setResult(aiText)
+      setResult(
+        response.data.choices[0].message.content
+      )
 
     } catch (error) {
 
@@ -88,10 +122,9 @@ ${features}
         ProjectPromt AI
       </h1>
 
-      <input
+      <select
         value={appType}
         onChange={(e) => setAppType(e.target.value)}
-        placeholder="Jenis aplikasi"
         style={{
           width: "100%",
           padding: "15px",
@@ -99,7 +132,53 @@ ${features}
           border: "none",
           marginBottom: "15px"
         }}
-      />
+      >
+        <option value="">Pilih Jenis Aplikasi</option>
+        <option value="Website Company Profile">Website Company Profile</option>
+        <option value="E-Commerce">E-Commerce</option>
+        <option value="Aplikasi Kasir">Aplikasi Kasir</option>
+        <option value="Aplikasi Sekolah">Aplikasi Sekolah</option>
+        <option value="Aplikasi Rumah Sakit">Aplikasi Rumah Sakit</option>
+        <option value="Aplikasi Chat">Aplikasi Chat</option>
+        <option value="Aplikasi AI">Aplikasi AI</option>
+        <option value="Game Mobile">Game Mobile</option>
+      </select>
+
+      <select
+        value={technology}
+        onChange={(e) => setTechnology(e.target.value)}
+        style={{
+          width: "100%",
+          padding: "15px",
+          borderRadius: "10px",
+          border: "none",
+          marginBottom: "15px"
+        }}
+      >
+        <option value="">Pilih Teknologi</option>
+        <option value="React + Firebase">React + Firebase</option>
+        <option value="React + Node.js">React + Node.js</option>
+        <option value="React + Laravel">React + Laravel</option>
+        <option value="Next.js">Next.js</option>
+        <option value="Flutter">Flutter</option>
+        <option value="React Native">React Native</option>
+      </select>
+
+      <select
+        value={detailLevel}
+        onChange={(e) => setDetailLevel(e.target.value)}
+        style={{
+          width: "100%",
+          padding: "15px",
+          borderRadius: "10px",
+          border: "none",
+          marginBottom: "15px"
+        }}
+      >
+        <option value="Standar">Standar</option>
+        <option value="Detail">Detail</option>
+        <option value="Sangat Detail">Sangat Detail</option>
+      </select>
 
       <textarea
         value={features}
@@ -128,9 +207,7 @@ ${features}
           fontWeight: "bold"
         }}
       >
-        {result === "Generating AI response..."
-          ? "Tunggu..."
-          : "Generate Prompt"}
+        Generate Prompt
       </button>
 
       <div
